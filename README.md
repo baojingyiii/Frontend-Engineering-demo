@@ -13,39 +13,35 @@
 ![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
 
 ## 📁 项目结构
-```
+```text
 frontend-quick-start/
-├── 📁 src/
-│   ├── 📁 api/           # API接口
-│   ├── 📁 assets/        # 静态资源
-│   ├── 📁 components/    # 公共组件
-│   ├── 📁 layouts/       # 布局组件
-│   ├── 📁 router/        # 路由配置
-│   ├── 📁 stores/        # Pinia状态管理
-│   ├── 📁 styles/        # 样式文件
-│   ├── 📁 utils/         # 工具函数
-│   ├── 📁 views/         # 页面组件
-│   ├── 📄 App.vue        # 根组件
-│   └── 📄 main.ts        # 入口文件
-├── 📄 .env               # 环境变量
-├── 📄 .env.development   # 开发环境
-├── 📄 .env.production    # 生产环境
-├── 📄 index.html         # HTML模板
-├── 📄 package.json       # 依赖配置
-├── 📄 tsconfig.json      # TypeScript配置
-├── 📄 vite.config.ts     # Vite配置
-└── 📄 README.md          # 项目说明
+├── demo-modules/
+|   └── modules/
+|   |   └── user.js
+|   ├── index.html
+|   ├── main.js
+├── demo-npm/
+├── demo-vite/
+├── demo-vue/
+├── demo-vue3/
+│   ├── src/
+│   │   ├── assets/
+│   │   ├── components/
+│   │   │   ├── Core.vue
+│   │   │   ├── father.vue
+│   │   │   ├── Form.vue
+│   │   │   ├── haha.vue
+│   │   │   ├── hehe.vue
+│   │   │   ├── Life.vue
+│   │   │   └── son.vue
+│   │   ├── App.vue
+│   │   └── main.js
+└── ES6/
+    ├── index.html
+    └── index.js
 ```
 
 ## ES6新特性
-```js
-const name = "张三"
-const age = 25
-// 反引号包裹，${} 插入变量
-const message = `我叫${name}，今年${age}岁`
-console.log(message)
-```
-
 ```html
 #ES6/index.html
 
@@ -64,6 +60,26 @@ console.log(message)
 ```
 
 ```js
+#ES6/index.js
+
+//补充
+// （1）反引号包裹，${} 插入变量
+const name = "张三"
+const age = 25
+// 反引号包裹，${} 插入变量
+const message = `我叫${name}，今年${age}岁`
+console.log(message)
+// （2）push:往数组末尾添加新元素
+// 假设有一个数组
+const arr = [1, 2, 3]
+// push 在数组末尾添加新元素
+arr.push(4)   // arr 变成 [1, 2, 3, 4]
+// console.log(arr)
+arr.push(5, 6) // arr 变成 [1, 2, 3, 4, 5, 6]
+// console.log(arr)
+
+
+
 // 1 var问题
 // 1.1越域
 {
@@ -294,7 +310,7 @@ console.log(network02);
 //注意：如果await,外层函数一定要有async。也就是在async封装的这个异步函数里面,
 
 ```
-```txt
+```text
 // 10.模块化：所有的模块都放在一个文件夹下，然后通过import引入（解决了原本只能放在一个js文件下面）
 // 方法：1.XXX.js  2.XXX.js需要暴露功能  3.在main.js中import {functionName} from "./XXX.js"
 // 4.在index.html中添加类型：模块化：<script src="main.js" type="module"></script>
@@ -304,6 +320,7 @@ console.log(network02);
 
 ```html
 # demo/index.html
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -319,6 +336,7 @@ console.log(network02);
 
 ```js
 # demo/main.js
+
 import {user,isAdult} from './modules/user.js'  //(2).导入相关的模块中的功能
 alert("当前用户："+ user.username);
 isAdult(user.age)
@@ -326,6 +344,7 @@ isAdult(user.age)
 
 ```js
 # demo/modules/user.js
+
 const user = {
     username: "张三",
     age: 18
@@ -343,9 +362,12 @@ export {user, isAdult}  //(3).暴露功能
 ```
 > 以上是一个模块化的小示例
 
+<hr>
 
+## 前端工程化：
+> node + vite + vue + vue-router + pinia + axios + ant-design-vue
 
-一、node
+### 一、node
 ```bash
 1.下载node.js
 2.配置国内镜像源
@@ -353,7 +375,7 @@ export {user, isAdult}  //(3).暴露功能
 4.npm run XXX  //XXX是package.json里面的scripts含有的命令
 ```
 
-二、vite:快速创建前端项目脚手架（也就是指一个项目的结构）
+### 二、vite:快速创建前端项目脚手架（也就是指一个项目的结构）
 ```bash
 npm create vite:创建一个脚手架
 npm install：安装依赖
@@ -379,40 +401,36 @@ src/App.vue:根组件
 vite.config.js:vite脚手架配置文件
 ```
 
-三、vue3
-SFC:Single File Component单文件组件
-页面由一个一个组件组成，单个组件是一个.vue文件，有以下三个结构组成
-```
+### 三、vue
+SFC:Single File Component单文件组件  <br>
+页面由一个一个组件组成，单个组件是一个.vue文件，有以下三个结构组成  <br>
+```vue
 <script setup>
 //编写脚本  （JavaScript/TypeScript代码）
 </script>
-
 <template>
 //编写页面模板  （HTML结构）
 </template>
-
 <style scoped>
  //编写样式  （CSS）
 </style>
 ```
 
-src/components:组件文件夹
-App.vue: 应用根组件(入口文件)
-```
+src/components:组件文件夹  <br>
+App.vue: 应用根组件(入口文件)  <br>
+```vue
+# App.vue
 <script setup>
-
 import Haha from "./components/haha.vue";  //（1）导入
-
 </script>
-
 <template>
-
-  <haha/>  //（2）导入component/haha.vue
-  
+  <haha/>  //（2）导入component/haha.vue  
 </template>
 ```
 
-```bash
+#### 基础使用
+```vue
+# components/core.vue
 1.插值
 
 2.指令
@@ -427,26 +445,32 @@ ref():
 reactive():
 (1)导入：import {reactive, ref} from "vue";(2)reactive包装:let car = reactive({brand: "奔驰", price: 500000 })
 
+# components/form.vue
 4.表单绑定:
 （1）定义变量：const formData=reactive({})（2）表单项中使用v-model=""进行绑定
+
 5.计算属性：computed
+
 6.监听属性：watch/watchEffect
+
 7.vue组件生命周期：四个阶段：创建、挂载、更新、销毁，每个阶段都有两个钩子（就是创建前和创建完成）
 created()/mounted()/updated()/destroyed()
+
+# components/father.vue components/son.vue
 8.组件传值：
 父传子：属性传递
 步骤：（1）父组件：引用子组件<son/>（2）子组件通过defineProps传承父组件的东西
 子传父：事件机制
-```txt
 步骤：
-1. 子组件 defineEmits 声明能触发的事件
-2. emit('事件名') 触发事件（广播）
-3. 父组件 @事件名="处理函数" 监听事件
-4. 父组件执行对应的处理函数
+(1.) 子组件 defineEmits 声明能触发的事件
+(2.) emit('事件名') 触发事件（广播）
+(3.) 父组件 @事件名="处理函数" 监听事件
+(4.) 父组件执行对应的处理函数
 ```
 
 ```vue
 #son.vue
+
 <script setup>
 let props = defineProps(['money']);
 let emits = defineEmits(['buy']);
@@ -467,6 +491,7 @@ function remain(){
 
 ```vue
 #father.vue
+
 <script setup>
 import Son from "./son.vue";
 import {ref} from "vue";
@@ -486,8 +511,7 @@ function moneyRemain(newMoney){
 <style scoped>
 </style>
 ```
-> 以上是一个子组件传父组件的示例
-```
+> 以上是一个子组件传父组件的简单示例
 
 
 
