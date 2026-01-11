@@ -1,7 +1,7 @@
 # Frontend-Engineering-demo
 
 ## 📋 项目简介
-前端工程化:node vite vue3 vue-router pinia axios ant-design-vue
+前端工程化:ES6 node vite vue3 vue-router pinia axios ant-design-vue
 
 ## 🛠️ 技术栈
 
@@ -41,26 +41,17 @@ frontend-quick-start/
     └── index.js
 ```
 
-## ES6新特性
+## 前端工程化
+
+### 一、ES6新特性
 ```html
-#ES6/index.html
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+...
     <script src="index.js"></script>  //导入js
-</head>
-<body>
-<h5>frontend</h5>
-
-</body>
-</html>
+...
 ```
 
 ```js
-#ES6/index.js
+# ES6/index.js
 
 //补充
 // （1）反引号包裹，${} 插入变量
@@ -78,260 +69,50 @@ arr.push(4)   // arr 变成 [1, 2, 3, 4]
 arr.push(5, 6) // arr 变成 [1, 2, 3, 4, 5, 6]
 // console.log(arr)
 
-
-
 // 1 var问题
 // 1.1越域
-{
-    var a = 1;
-    let b = 2;
-}
-console.log(a);  //1
-console.log(b);  //ReferenceError: b is not defined
-
 
 // 1.2 重复声明
 // var 可以声明多次
 // let 只能声明一次
-var m = 1
-var m = 2
-let n = 3
-let n = 4
-console.log(m)
-console.log(n)   //SyntaxError: Identifier 'n' has already been declared
-
 
 // 1.3 变量提升
 // var 会变量提升
 // let 不存在变量提升
-console.log(x);   //undefined
-var x = 10;
-console.log(y);   //ReferenceError: Cannot access 'y' before initialization
-let y = 20;
-
 
 // 2.const
-// 声明变量
-let c = 1;
-c = 2;
-console.log(c);
-// 声明不可变量
-const d = 1;
-d = 2;   //TypeError: Assignment to constant variable.
-
 
 // 3.解构
 // 3.1数组解构
-let arr = [1, "hello", 3];
-// 传统方法
-console.log(arr[0]);
-console.log(arr[1]);
-// 简便方法
-let [x, y, z] = arr
-console.log(y)
-
-
 // 3.2对象解构
-const person = {
-    name: "John",
-    age: 25,
-    language: ["java", "js", "css"],
-}
-//传统写法
-console.log(person.name)
-//简便写法:从对象中把属性单独解构出来
-const {name, age} = person;
-console.log("hello", age)
-
 
 // 4.链判断
-let message = null;
-//假设 message = {} 有很多属性
-//错误的写法：
-console.log(message.body.user.firstName);
-//一个复杂对象，属性层级很深。可能会存在message.name.user而user属性实际不存在的情况。
-//正确的写法：
-const firstName=(message && message.body && message.body.user && message.body.user.firstName) || "default";
-console.log(firstName)
-//简便写法：//这个firstName不一定有，如果执行到一半发现没有，就不会继续往下寻找属性了
-const firstName = message?.body?.user?.firstName || "default";
-console.log(firstName)
-
 
 //5.参数默认值
-function add(a, b) {
-    //b = b || 1;   //判断b是否为空，为空就给默认值1
-    return a + b;
-}
-
-let addRes = add(2);
-console.log(addRes);
-//以上方法，因为即使去掉b（没有默认值）,只传a的参数也会输出“NaN”，在项目大了之后，就会导致即使参数没有传入也不会显示报错的情况
-
-//利用参数默认值的特性，给b一个默认值=10
-function add(a, b = 10) {
-    return a + b;
-}
-console.log(add(1, 2));
-console.log(add(2));
 
 //6.箭头函数
-let sum = function (a, b) {
-    return a + b;
-};
-console.log(sum(10, 20))
-//简便写法
-//语法糖
-let sum2 = (a, b) => a + b;
-console.log(sum2(1, 20))
-//代码不止一行，可以用{}
-let sum3 = (a, b) => {
-    c = a - b;
-    return c;
-};
-console.log(sum3(100, 20))
-
 
 // 7.promise :异步对象-- > 不阻塞后续代码
-// 7.1同步
-//同步:按照顺序一个一个往下执行
-console.log(111)
-console.log(122)
-//fetch:支持远程抓取数据的函数
-let fet = fetch("https://www.baidu.com/")
-console.log(fet)
-
-// 7.2异步promise
-//只要是属于promise异步对象，则执行时不等待promise对象的结果
-console.log("fetch前")
-
-let fetch01 = fetch("https://raw.githubusercontent.com/mdn/learning-area/main/javascript/apis/fetching-data/can-store/products.json")
-fetch01.then((res) => console.log("响应结果", res)).catch((err) => console.log("失败返回", err))
-//then:获取抓取成功的数据   catch:抓取失败之后执行的操作
-
-console.log("fetch后")
-
-// 7.3理解promise.then
-console.log("fetch前")
-let fetch02 = fetch("https://raw.githubusercontent.com/mdn/learning-area/main/javascript/apis/fetching-data/can-store/products.json")
-fetch02.then((res) => {
-    console.log("响应结果", res)
-    // let json = res.json();
-    // console.log(json)  //此时只会打印 'Promise{<pending>}'
-    // // 也就是`let json =res.json();`还没执行，直接执行`console.log(json)`。
-    // // 因为promise是异步处理，所以`let json =res.json();`会被先跳过，先执行下一句，导致实际上json还没拿到数据（还没拿到res.json里面的数据）。
-    // 正确做法是通过then等待获取的数据
-    let json = res.json();
-    json.then(jsonRes => {
-        console.log(jsonRes)
-    })
-    // 综上可见：想要获取promise对象的结果，使用promise.then()
-    // 仅仅`let json = res.json();`是不够的，需要then来等待获取的结果，再console.log
-}).catch((err) => console.log("失败返回", err))
-console.log("fetch后")
-
 // promise三种状态：pending待定, fulfilled已兑现 -> promise.then  , rejected已拒绝 -> promise.catch
 
-// 7.4自己创建promise
-new Promise((resolve, reject) => {
-    resolve('ok'); //返回获取成功的结果
-    reject('error'); //返回获取失败的结果
-})
-
-//写一个promise，只做了解
-let pro = new Promise((resolve, reject) => {
-    $.ajax({
-        url: url,
-        type: 'GET',
-        data: data,
-        success: function (data) {
-            resolve(data);  //传递成功结果
-        },
-        error: function (error) {
-            reject(error);  //传递失败消息
-        }
-    })
-})
-pro.then(function (res) {
-}).catch(function (err) {
-})
-
-
 // 8.Async关键字：封装成异步函数promise
-// 普通函数是同步的
-console.log("哈哈哈哈哈哈0");
-
-function hahaha() {
-    console.log("哈哈哈哈哈哈1");
-    return 1;
-}
-
-hahaha();
-console.log("哈哈哈哈哈2");
-
 //变成异步的方法：1.封装异步: new Promise()   2.async
-console.log("哈哈哈哈哈哈0");
-
-async function hahaha() {
-    console.log("哈哈哈哈哈哈1");
-    return 123;
-}
-
-console.log(hahaha());  //哈哈哈哈哈哈1  |  Promise {<fulfilled>: 1}
-//可见hahaha()已经变成了promise对象
-hahaha().then(result => {
-    console.log(result);  //123
-})
-//通过then拿到结果
-console.log("哈哈哈哈哈2");
-
 
 // 9.await : 因为异步函数需要then才能拿到结果，而await简化了步骤，加上await后可以直接用写同步代码的方式
-// 声明一个异步函数
-async function getDataNetwork() {
-    console.log("111")
-    //promise01是异步函数，但是如果想要写同步代码的方式，前面加上await
-    let promise01 = await fetch("https://jsonplaceholder.typicode.com/posts");
-    let json = await promise01.json();
-    //return json;   //一旦执行 return，函数就会立即结束，后面的代码不会执行。
 
-    console.log("333");
-    return json;
-}
-
-//正确写法：
-let network = getDataNetwork();
-network.then(result => {
-    console.log(result);
-})
-//错误写法：
-let network02 = await getDataNetwork();
-console.log(network02);
-//注意：如果await,外层函数一定要有async。也就是在async封装的这个异步函数里面,
-
-```
-```text
 // 10.模块化：所有的模块都放在一个文件夹下，然后通过import引入（解决了原本只能放在一个js文件下面）
 // 方法：1.XXX.js  2.XXX.js需要暴露功能  3.在main.js中import {functionName} from "./XXX.js"
 // 4.在index.html中添加类型：模块化：<script src="main.js" type="module"></script>
 ```
-## 模块化
+
+#### 模块化
 所有的模块都放在一个文件夹modules下，解决了原本只能放在一个js文件中
 
 ```html
 # demo/index.html
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+...
     <script src="main.js" type="module"></script>  //(1).引用main.js，type类型修改为module
-</head>
-<body>
-
-</body>
-</html>
+...
 ```
 
 ```js
@@ -364,10 +145,7 @@ export {user, isAdult}  //(3).暴露功能
 
 <hr>
 
-## 前端工程化：
-> node + vite + vue + vue-router + pinia + axios + ant-design-vue
-
-### 一、node
+### 二、node
 ```bash
 1.下载node.js
 2.配置国内镜像源
@@ -375,7 +153,7 @@ export {user, isAdult}  //(3).暴露功能
 4.npm run XXX  //XXX是package.json里面的scripts含有的命令
 ```
 
-### 二、vite:快速创建前端项目脚手架（也就是指一个项目的结构）
+### 三、vite:快速创建前端项目脚手架（也就是指一个项目的结构）
 ```bash
 npm create vite:创建一个脚手架
 npm install：安装依赖
@@ -401,7 +179,7 @@ src/App.vue:根组件
 vite.config.js:vite脚手架配置文件
 ```
 
-### 三、vue
+### 四、vue
 SFC:Single File Component单文件组件  <br>
 页面由一个一个组件组成，单个组件是一个.vue文件，有以下三个结构组成  <br>
 ```vue
