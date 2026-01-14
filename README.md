@@ -236,9 +236,9 @@ created()/mounted()/updated()/destroyed()
 
 # components/father.vue components/son.vue
 8.组件传值：
-父传子：属性传递
+8.1父传子：属性传递
 步骤：（1）父组件：引用子组件<son/>（2）子组件通过defineProps传承父组件的东西
-子传父：事件机制
+8.2子传父：事件机制
 步骤：
 (1.) 子组件 defineEmits 声明能触发的事件
 (2.) emit('事件名') 触发事件（广播）
@@ -290,6 +290,342 @@ function moneyRemain(newMoney){
 </style>
 ```
 > 以上是一个子组件传父组件的简单示例
+
+8.3 插槽：
+```text
+步骤 （1）父组件
+<son>
+<button>哈哈</button>
+</son>
+（2）子组件
+<slot/>
+//此时子组件就会显示父组件的按钮
+8.3.1插槽设置默认值：<slot>哈哈son</slot>
+//此时如果父组件没有传值，显示默认值
+8.3.2具名插槽：通过name锁定需要更换内容
+子组件：
+<slot name="title">哈哈son</slot>
+父组件：
+<template #title>
+SonSon
+</template>
+```
+
+
+### 五、vue-router
+> 官方文档：https://router.vuejs.org/zh/guide/
+```text
+（一）.创建路由
+router--index.js
+1.定义路由表
+2.创建路由器
+3.导出路由器
+4.vue实例使用路由器--main.js
+5.修改--APP.vue:(1)<RouterLink to="/">首页</RouterLink>(2)<RouterView/>
+
+（二）.路径参数
+#index.js:在路径后面加:XX
+const routes = [
+  { path: '/hello/:id', component: Hello },
+]
+#App.vue:直接写路径
+添加RouterLink：<RouterLink to="/hello/123">hello</RouterLink>
+添加RouterView：<RouterView/>
+(三).嵌套路由
+1.在App.vue里面添加路由链接: <RouterLink to="/user/bao">用户中心</RouterLink>
+2.同样的在index.js里面添加/user/:id,然后再里面嵌套,children
+path:'/user/:id',
+component: User,
+children:[
+    {
+    path: 'profile',
+    component: UserProfile,
+    }
+3.在views/user/继续创建vue组件
+然后在user.vue里面：
+添加RouterLink:<RouterLink to="/user/bao/posts">邮件</RouterLink>
+添加RouterView。
+(四)编程式导航：(也就是拿到路由参数)
+useRoute:路由数据：拿到一些路由参数
+userRouter:路由器：可以控制页面跳转
+```
+(五)路由传参：(也就是传进去路由参数)  <br>
+1.params 参数:必须使用组件name  <br>
+> 配置App.vue  
+```vue
+<script setup>
+  //<!--方法一：编程式跳转-->
+  function paramsTest(){
+    router.push('/haha/123/bao/18')
+  }
+  //<!--方法二：编程式跳转-->
+  function paramsTest() {
+    router.push({
+      name: 'haha',
+      params: {
+        id: 2,
+        name: 'zhangSan',
+        age: 222
+      }
+    })
+  }
+</script>
+<template>
+<!--  params 参数-->
+<!--方法一：RouterLink-->
+<RouterLink to="/haha/123/bao/18">haha123</RouterLink>
+<!--方法二：RouterLink-->
+<RouterLink :to="{
+name:'haha',
+    params:{
+    id: 7,
+        name: 'zhangSan',
+        age: 22
+}
+}">对象传参</RouterLink>
+
+  <!--  params 参数:编程式-->
+<button @click="paramsTest">param传参</button>
+</template>
+```
+2.query 参数：path,name都可以
+> 配置App.vue
+```vue
+<script setup>
+function helloQuery() {
+//  <!--方法一：编程式跳转-->
+// router.push('/hello?id=1&name=zhangSan');
+// <!--方法二：编程式跳转-->
+router.push({
+path:'/hello',
+query:{
+id: 5,
+name: 'LiSi'
+}
+})
+}
+</script>
+<template>
+  <!--  query 参数:  方法一-->
+  <RouterLink to="/hello?id=3&name=LiSi">hello</RouterLink>
+  <!--  query 参数： 方法二-->
+  <RouterLink :to="{
+    path:'/hello',
+    query:{
+      id: 4,
+      name: 'LiSi',
+    }
+  }">hello对象
+  </RouterLink>
+  <!--  query 参数：编程式-->
+  <button @click="helloQuery">query传参</button>
+</template>
+```
+路由传参：在具体的组件中显示(例如，若是query，则把params改成query)
+```vue
+  <!--  params参数-->
+<h1>我是haha {{ $route.params.id }},{{ $route.params.name }},{{ $route.params.age }}</h1>
+
+<div>
+  {{ route.params.id }} <br>
+  {{ route.params.name }} <br>
+  {{ route.params.age }} <br>
+</div>
+```
+
+(六)导航守卫：(可以阻止访问某个网页)  <br>
+全局前置守卫 
+```js
+//const router = createRouter({ ... })
+router.beforeEach((to, from) => {
+    console.log('to', to);  //to: 即将要进入的目标
+    console.log('from', from);  //from: 当前导航正要离开的路由
+    return false  // 返回 false 以取消导航
+    // return true // 返回 true 继续导航
+    // return '/hello'  //返回'路径'，跳转指定页面
+})
+```
+
+#### vue-router总结：
+```text
+路由配置：1.routes:路由表 2.createRouter():创建路由器
+标签：
+1.router-link:指定跳转的页面
+2.router-view:指定在哪个位置动态显示路由组件
+函数：
+1.useRoute()：获取路由数据  --- path , params , query , name
+2.useRouter():获取路由器（控制页面跳转） --- push（跳转到新页面）, go
+导航守卫
+```
+
+### 六、axios ：基于promise的网络请求（用于连接前后端应用：发送请求，接收响应）
+get请求,post请求:GET 方法用于从服务器获取数据，POST 方法用于向服务器提交数据
+#### 1.发送请求
+```vue
+<script setup>
+  import axios from "axios";
+  
+  function getInfo(){
+    axios.get('https://jsonplaceholder.typicode.com/posts/').then(res=>{
+      console.log(res.data)
+    })
+    // config: 请求配置
+    // data: 服务器响应数据
+    // headers: 响应头
+    // status: 响应状态码
+    // statusText: 响应描述文本
+  }
+
+  function getInfoParams(){
+    axios.get("https://jsonplaceholder.typicode.com/posts/",{
+      params: {
+        id:1,
+        username:'zhangsan'
+      }
+    }).then(resp=>{
+      console.log(resp)
+    })
+  }
+</script>
+<template>
+  <!--  发送请求:get -->
+  <button @click="getInfo">GET请求</button>
+  <button @click="getInfoParams">GET请求 参数</button>
+</template>
+
+```
+> 简化,这样需要的时候直接import引入,网页地址不需要详细写出来
+```js
+//import http from "./utils/http/index.js"; 专门存放axios请求，这样需要的时候直接import引入就好了
+import axios from "axios";
+const instance = axios.create({
+  baseURL: 'https://some-domain.com/api/',
+  timeout: 1000,
+  headers: {'X-Custom-Header': 'foobar'}   //自定义请求头
+});
+export default instance;
+```
+#### 2.拦截器
+```js
+// 添加请求拦截器
+axios.interceptors.request.use(function (config) {
+    // 在发送请求之前做些什么
+    return config;
+  }, function (error) {
+    // 对请求错误做些什么
+    return Promise.reject(error);
+  });
+
+// 添加响应拦截器
+axios.interceptors.response.use(function (response) {
+    // 2xx 范围内的状态码都会触发该函数。
+    // 对响应数据做点什么
+    return response;  //return response.data;直接响应返回data的数据
+  }, function (error) {
+    // 超出 2xx 范围的状态码都会触发该函数。
+    // 对响应错误做点什么
+    return Promise.reject(error);
+  });
+```
+
+
+### 七、pinia：状态管理（保存状态数据，方便在各个组件之间共享）
+访问一个网页下面的组件：1.通过路由传参2.组件传值（父子组件）3.使用pinia
+> main.js使用pinia
+```js
+import { createPinia } from 'pinia'
+const pinia = createPinia()
+```
+```text
+State:核心数据 
+Getter:数据获取
+Actions:数据操作
+```
+> defineStore() 的第二个参数可接受两类值：Setup 函数或 Option 对象。
+```text
+Option写法:带有 state、actions 与 getters 属性
+state 是 store 的数据 (data)，getters 是 store 的计算属性 (computed)，而 actions 则是方法 (methods)
+```
+> 配置：
+```js
+// stores/money.js
+//存储单元
+
+export const useCounterStore = defineStore('counter', {
+  state: () => ({ count: 0, name: 'Eduardo' }),
+  getters: {
+    doubleCount: (state) => state.count * 2,
+  },
+  actions: {
+    increment() {
+      this.count++
+    },
+  },
+})
+```
+> 调用：
+```vue
+
+<script setup>
+
+import {useMoneyStore} from "../stores/money.js";
+let MoneyStore = useMoneyStore();
+</script>
+
+<template>
+<!--   直接使用即可-->
+  <h2>人民币:{{MoneyStore.rmb}}</h2>
+</template>
+```
+```text
+Setup写法：
+ref() 就是 state 属性
+computed() 就是 getters
+function() 就是 actions
+```
+> 配置：
+```js
+export const useCounterStore = defineStore('counter', () => {
+  const count = ref(0)
+  const name = ref('Eduardo')
+  const doubleCount = computed(() => count.value * 2)
+  function increment() {
+    count.value++
+  }
+
+  return { count, name, doubleCount, increment }
+})
+
+```
+调用:(方法和option相同)
+
+
+### 八、工具链
+```bash
+npm create vue@latest:(Vue+Router+Pinia等)。已经全部配齐了，不需要再安装依赖，配置功能了
+npm create vite:（Vue + Vite）
+```
+
+### 九、Ant Design Vue:ui框架
+```bash
+安装：npm install --save ant-design-vue@4.x
+注册:
+import Antd from 'ant-design-vue';
+import 'ant-design-vue/dist/reset.css';
+app.use(Antd)
+
+参考官方文档直接使用：https://www.antdv.com/components/overview-cn/
+```
+
+
+
+
+
+
+
+
+
+
 
 
 
