@@ -290,9 +290,8 @@ function moneyRemain(newMoney){
 </style>
 ```
 > 以上是一个子组件传父组件的简单示例
-
-8.3 插槽：
 ```text
+8.3 插槽：
 步骤 （1）父组件
 <son>
 <button>哈哈</button>
@@ -433,9 +432,9 @@ name: 'LiSi'
 </div>
 ```
 
-(六)导航守卫：(可以阻止访问某个网页)  <br>
-全局前置守卫 
+(六)导航守卫：(可以阻止访问某个网页) 
 ```js
+// 全局前置守卫 
 //const router = createRouter({ ... })
 router.beforeEach((to, from) => {
     console.log('to', to);  //to: 即将要进入的目标
@@ -530,27 +529,25 @@ axios.interceptors.response.use(function (response) {
 
 
 ### 七、pinia：状态管理（保存状态数据，方便在各个组件之间共享）
+```text
 访问一个网页下面的组件：1.通过路由传参2.组件传值（父子组件）3.使用pinia
-> main.js使用pinia
-```js
+main.js使用pinia
+
 import { createPinia } from 'pinia'
 const pinia = createPinia()
-```
-```text
+
 State:核心数据 
 Getter:数据获取
 Actions:数据操作
-```
-> defineStore() 的第二个参数可接受两类值：Setup 函数或 Option 对象。
-```text
-Option写法:带有 state、actions 与 getters 属性
-state 是 store 的数据 (data)，getters 是 store 的计算属性 (computed)，而 actions 则是方法 (methods)
-```
-> 配置：
-```js
-// stores/money.js
-//存储单元
 
+defineStore() 的第二个参数可接受两类值：Setup 函数或 Option 对象。
+
+>> Option写法:带有 state、actions 与 getters 属性
+state 是 store 的数据 (data)，getters 是 store 的计算属性 (computed)，而 actions 则是方法 (methods)
+
+> 配置：
+// stores/money.js
+// 存储单元
 export const useCounterStore = defineStore('counter', {
   state: () => ({ count: 0, name: 'Eduardo' }),
   getters: {
@@ -562,29 +559,23 @@ export const useCounterStore = defineStore('counter', {
     },
   },
 })
-```
+
 > 调用：
-```vue
-
 <script setup>
-
 import {useMoneyStore} from "../stores/money.js";
 let MoneyStore = useMoneyStore();
 </script>
-
 <template>
 <!--   直接使用即可-->
   <h2>人民币:{{MoneyStore.rmb}}</h2>
 </template>
-```
-```text
-Setup写法：
+
+>> Setup写法：
 ref() 就是 state 属性
 computed() 就是 getters
 function() 就是 actions
-```
+
 > 配置：
-```js
 export const useCounterStore = defineStore('counter', () => {
   const count = ref(0)
   const name = ref('Eduardo')
@@ -596,18 +587,16 @@ export const useCounterStore = defineStore('counter', () => {
   return { count, name, doubleCount, increment }
 })
 
+> 调用:(方法和option相同)
 ```
-调用:(方法和option相同)
-
 
 ### 八、工具链
-```bash
-npm create vue@latest:(Vue+Router+Pinia等)。已经全部配齐了，不需要再安装依赖，配置功能了
-npm create vite:（Vue + Vite）
+```text
+npm create vue@latest     :(Vue+Router+Pinia等)。已经全部配齐了，不需要再安装依赖，配置功能了
+npm create vite      :（Vue + Vite）
 ```
-
 ### 九、Ant Design Vue:ui框架
-```bash
+```text
 安装：npm install --save ant-design-vue@4.x
 注册:
 import Antd from 'ant-design-vue';
@@ -616,19 +605,6 @@ app.use(Antd)
 
 参考官方文档直接使用：https://www.antdv.com/components/overview-cn/
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
